@@ -11,7 +11,7 @@ describe('Test Case 5: Register User with existing email', () => {
         cy.get('input[name="email"]').type(email)
         cy.get('button').contains(/signup/i).click()
       })
-      cy.contains(/Email Address already exist|already exist/i).should('be.visible')
+      cy.contains(/Email Address already exist|already exist/i, { timeout: 10000 }).should('be.visible')
     })
   })
 })

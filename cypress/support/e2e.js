@@ -10,11 +10,21 @@ beforeEach(() => {
   // keep session/local storage if needed in the future
 })
 
+// Make screenshot capture only in interactive mode to avoid timeouts in headless runs
 afterEach(function () {
-  // capture screenshot on test failure
   if (this.currentTest.state === 'failed') {
+    const interactive = Cypress.config('isInteractive')
     const testTitle = this.currentTest.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()
-    cy.screenshot(`failed-${testTitle}`)
+    if (interactive) {
+      // only attempt screenshot when running interactively
+      cy.screenshot(`failed-${testTitle}`)
+    } else {
+      // log failure in headless mode instead of screenshot to avoid timeouts
+      // screenshots are still produced by Cypress on failure when enabled in config
+      // but we avoid an extra screenshot step here
+      // eslint-disable-next-line no-console
+      console.log('Test failed (headless) —', testTitle)
+    }
   }
 })
 // ***********************************************************

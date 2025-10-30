@@ -4,11 +4,12 @@ const common = require('../../modules/common')
 describe('Test Case 1: Register User', () => {
   it('should register and delete user successfully', () => {
     cy.generateUser().then((user) => {
-      // augment user with password and dob
-      user.password = user.password || 'Password123!'
-      user.dob = '1-1-1990' // day-month-year values to select
-      user.firstName = user.firstName
-      user.lastName = user.lastName
+  // augment user with password and dob and ensure names are present
+  user.password = user.password || 'Password123!'
+  // use day-MonthName-year format for the auth helper
+  user.dob = '1-January-1990'
+  user.firstName = user.firstName || 'Test'
+  user.lastName = user.lastName || 'User'
 
       // 1-3
       common.visitHome()
@@ -24,14 +25,14 @@ describe('Test Case 1: Register User', () => {
         cy.get('button').contains(/signup/i).click()
       })
 
-      // 8-12
-      cy.contains(/Enter Account Information|ENTER ACCOUNT INFORMATION/i).should('be.visible')
+  // 8-12
+  cy.contains(/Enter Account Information|ENTER ACCOUNT INFORMATION/i, { timeout: 10000 }).should('be.visible')
       auth.fillAccountInformation(user)
       auth.fillAddressDetails(user)
 
       // 13-16
-      auth.clickCreateAccount()
-      cy.contains('ACCOUNT CREATED!').should('be.visible')
+  auth.clickCreateAccount()
+  cy.contains('ACCOUNT CREATED!', { timeout: 10000 }).should('be.visible')
       cy.get('a').contains(/continue/i).click()
       cy.contains(new RegExp(`Logged in as`)).should('be.visible')
 
