@@ -27,6 +27,21 @@ afterEach(function () {
     }
   }
 })
+// Save HTML snapshot for failed tests to help debugging (written via task in cypress.config.js)
+afterEach(function () {
+  if (this.currentTest && this.currentTest.state === 'failed') {
+    const specName = Cypress.spec.name.replace(/[^a-z0-9\.\-]/gi, '_')
+    const testTitle = this.currentTest.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()
+    const filename = `failed-${specName}-${testTitle}-${Date.now()}.html`
+    // capture the current document HTML and write via task
+    cy.document().then((doc) => {
+      const html = doc.documentElement.outerHTML
+      // call node task to save file
+      // eslint-disable-next-line no-undef
+      cy.task('saveHtml', { filename, html })
+    })
+  }
+})
 // ***********************************************************
 // This example support/e2e.js is processed and
 // loaded automatically before your test files.
