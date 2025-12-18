@@ -40,7 +40,7 @@ describe('Test Case 15: Place Order - Register before Checkout', () => {
         
         cy.log('Procedendo para checkout')
         cy.get('a').contains(/Proceed To Checkout/i).click()
-        cy.contains(/Address Details|Review Your Order/i, { timeout: 15000 }).should('be.visible')
+        cy.contains(/Address Details|Review Your Order/i, { timeout: 10000 }).should('be.visible')
         
         cy.get('textarea[name="message"]').type('Please deliver between 9-18')
         cy.get('a').contains(/Place Order/i).click()
@@ -53,7 +53,7 @@ describe('Test Case 15: Place Order - Register before Checkout', () => {
         cy.get('input[name="expiry_year"]').type('2025')
         
         cy.get('button').contains(/Pay and Confirm Order/i).click()
-        cy.contains(/Your order has been placed successfully!|Order Placed!|Congratulations/i, { timeout: 15000 }).should('be.visible')
+        cy.contains(/Your order has been placed successfully!|Order Placed!|Congratulations/i, { timeout: 10000 }).should('be.visible')
         cy.log('Pedido realizado com sucesso')
         
       } else {

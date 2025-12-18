@@ -32,7 +32,7 @@ if (Cypress.env('USE_FIXED_USER') || Cypress.env('USE_FIXED_USER') === true) {
 
     // 8-12
     // wait for account information form (heading may vary) - fallback to checking for password/dob inputs
-    cy.get('input[name="password"], select[data-qa="days"], select[name="days"]', { timeout: 20000 }).should('exist')
+    cy.get('input[name="password"], select[data-qa="days"], select[name="days"]', { timeout: 10000 }).should('exist')
         auth.fillAccountInformation(user)
         auth.fillAddressDetails(user)
 
@@ -67,7 +67,7 @@ if (Cypress.env('USE_FIXED_USER') || Cypress.env('USE_FIXED_USER') === true) {
               cy.get('input[name="password"]').first().clear().type(user.password)
               cy.get('button').contains(/login/i).click()
             })
-            cy.contains(/Logged in as|Logout/i, { timeout: 20000 }).should('be.visible')
+            cy.contains(/Logged in as|Logout/i, { timeout: 10000 }).should('be.visible')
             // delete account if possible
             cy.get('a').contains(/delete account/i).click()
             cy.contains('ACCOUNT DELETED!').should('be.visible')

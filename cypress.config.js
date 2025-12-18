@@ -17,6 +17,10 @@ module.exports = defineConfig({
     baseUrl: 'https://automationexercise.com',
     supportFile: 'cypress/support/e2e.js',
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    defaultCommandTimeout: 8000,
+    pageLoadTimeout: 30000,
+    requestTimeout: 10000,
+    responseTimeout: 10000,
     setupNodeEvents(on, config) {
       // register mochawesome reporter
       require('cypress-mochawesome-reporter/plugin')(on)
