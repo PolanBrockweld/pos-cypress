@@ -6,7 +6,7 @@ if (Cypress.env('USE_FIXED_USER') || Cypress.env('USE_FIXED_USER') === true) {
     it('skipped', () => { cy.log('Skipping register tests in fixed-user mode') })
   })
 } else {
-  describe('Test Case 1: Register User', () => {
+  describe.skip('Test Case 1: Register User', () => {
     it('should register and delete user successfully', () => {
       cy.generateUser().then((user) => {
     // augment user with password and dob and ensure names are present

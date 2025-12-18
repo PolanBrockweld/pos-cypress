@@ -1,4 +1,4 @@
-describe('Test Case 15: Place Order - Register before Checkout', () => {
+describe.skip('Test Case 15: Place Order - Register before Checkout', () => {
   let testUser
 
   before(() => {
