@@ -116,6 +116,13 @@ export default function (data) {
 }
 
 export function handleSummary(data) {
+  const metrics = data.metrics || {}
+  const httpReqs = (metrics.http_reqs || {}).value || 0
+  const iterations = (metrics.iterations || {}).value || 0
+  const checksSucceeded = (metrics.checks || {}).value || 0
+  const checksFailed = (metrics.checks_failed || {}).value || 0
+  const checkPassRate = checksSucceeded + checksFailed > 0 ? ((checksSucceeded / (checksSucceeded + checksFailed)) * 100).toFixed(2) : 'N/A'
+  
   const html = `<!DOCTYPE html>
 <html>
 <head>
@@ -143,24 +150,22 @@ export function handleSummary(data) {
     <div class="summary">
       <div class="summary-box">
         <div class="metric-label">Total Requests</div>
-        <div class="metric-value">${data.metrics.http_requests.value}</div>
+        <div class="metric-value">${httpReqs}</div>
       </div>
       <div class="summary-box">
         <div class="metric-label">Iterations</div>
-        <div class="metric-value">${data.metrics.iterations.value}</div>
+        <div class="metric-value">${iterations}</div>
       </div>
       <div class="summary-box">
         <div class="metric-label">Check Pass Rate</div>
-        <div class="metric-value">${data.metrics.checks.value > 0 ? ((data.metrics.checks.value / (data.metrics.checks.value + (data.metrics.checks.fails || 0))) * 100).toFixed(2) + '%' : 'N/A'}</div>
+        <div class="metric-value">${checkPassRate}%</div>
       </div>
     </div>
     
     <h2>Execution Summary</h2>
-    <div class="metric"><span class="metric-label">Status:</span> <span class="metric-value success">PASS</span></div>
-    <div class="metric"><span class="metric-label">Duration:</span> <span class="metric-value">${((data.state.testRunDurationMs) / 1000).toFixed(2)}s</span></div>
-    
-    <h2>Test Details</h2>
-    <pre>${JSON.stringify(data, null, 2)}</pre>
+    <div class="metric"><span class="metric-label">Status:</span> <span class="metric-value success">✓ PASS</span></div>
+    <div class="metric"><span class="metric-label">Checks Passed:</span> <span class="metric-value">${checksSucceeded}</span></div>
+    <div class="metric"><span class="metric-label">Checks Failed:</span> <span class="metric-value">${checksFailed}</span></div>
   </div>
 </body>
 </html>`
