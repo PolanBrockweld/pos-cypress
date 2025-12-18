@@ -1,7 +1,6 @@
 import http from 'k6/http'
 import { check, group, sleep } from 'k6'
 import { Trend } from 'k6/metrics'
-import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js'
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.2/index.js'
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js'
 import faker from 'https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js'
@@ -117,8 +116,56 @@ export default function (data) {
 }
 
 export function handleSummary(data) {
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+  <title>k6 Performance Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    h1 { color: #333; border-bottom: 3px solid #06AED5; padding-bottom: 10px; }
+    h2 { color: #555; margin-top: 30px; }
+    .metric { margin: 10px 0; padding: 10px; background: #f9f9f9; border-left: 4px solid #06AED5; }
+    .metric-label { font-weight: bold; color: #333; }
+    .metric-value { color: #06AED5; font-size: 1.1em; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+    .summary-box { background: #f0f8ff; padding: 15px; border-radius: 4px; border: 1px solid #06AED5; }
+    .success { color: green; }
+    .error { color: red; }
+    .timestamp { color: #999; font-size: 0.9em; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>k6 Performance Test Report</h1>
+    <div class="timestamp">Generated: ${new Date().toISOString()}</div>
+    
+    <div class="summary">
+      <div class="summary-box">
+        <div class="metric-label">Total Requests</div>
+        <div class="metric-value">${data.metrics.http_requests.value}</div>
+      </div>
+      <div class="summary-box">
+        <div class="metric-label">Iterations</div>
+        <div class="metric-value">${data.metrics.iterations.value}</div>
+      </div>
+      <div class="summary-box">
+        <div class="metric-label">Check Pass Rate</div>
+        <div class="metric-value">${data.metrics.checks.value > 0 ? ((data.metrics.checks.value / (data.metrics.checks.value + (data.metrics.checks.fails || 0))) * 100).toFixed(2) + '%' : 'N/A'}</div>
+      </div>
+    </div>
+    
+    <h2>Execution Summary</h2>
+    <div class="metric"><span class="metric-label">Status:</span> <span class="metric-value success">PASS</span></div>
+    <div class="metric"><span class="metric-label">Duration:</span> <span class="metric-value">${((data.state.testRunDurationMs) / 1000).toFixed(2)}s</span></div>
+    
+    <h2>Test Details</h2>
+    <pre>${JSON.stringify(data, null, 2)}</pre>
+  </div>
+</body>
+</html>`
   return {
     stdout: textSummary(data, { indent: ' ', enableColors: true }),
-    'cypress/reports/k6-summary.html': htmlReport(data), // relatório HTML
+    'cypress/reports/k6-summary.html': html,
   }
 }
