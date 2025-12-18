@@ -1,0 +1,26 @@
+[
+  {
+    "firstname": "Erica",
+    "lastname": "Miles",
+    "totalprice": 120,
+    "depositpaid": true,
+    "bookingdates": { "checkin": "2025-12-20", "checkout": "2025-12-25" },
+    "additionalneeds": "Breakfast"
+  },
+  {
+    "firstname": "Noah",
+    "lastname": "Rossi",
+    "totalprice": 220,
+    "depositpaid": false,
+    "bookingdates": { "checkin": "2026-01-10", "checkout": "2026-01-12" },
+    "additionalneeds": "Late checkout"
+  },
+  {
+    "firstname": "Lia",
+    "lastname": "Carter",
+    "totalprice": 310,
+    "depositpaid": true,
+    "bookingdates": { "checkin": "2026-02-05", "checkout": "2026-02-15" },
+    "additionalneeds": "Airport pickup"
+  }
+]

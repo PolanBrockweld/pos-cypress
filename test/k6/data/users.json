@@ -1,0 +1,5 @@
+[
+  { "age": 28, "department": "Quality", "job": "QA Engineer" },
+  { "age": 32, "department": "Engineering", "job": "Backend Developer" },
+  { "age": 30, "department": "Product", "job": "Product Manager" }
+]
