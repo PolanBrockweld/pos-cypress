@@ -43,13 +43,12 @@ export default function (data) {
     const template = randomItem(users)
     const firstName = faker.name.firstName()
     const lastName = faker.name.lastName()
-    const payload = {
-      ...template,
+    const payload = Object.assign({}, template, {
       firstName,
       lastName,
       username: faker.internet.userName(firstName, lastName),
       email: faker.internet.email(firstName, lastName, 'example.com'),
-    }
+    })
 
     group('Create user (data-driven)', () => {
       const res = http.post(`${BASE_URL}/users/add`, JSON.stringify(payload), {
