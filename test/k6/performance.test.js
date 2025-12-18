@@ -68,7 +68,7 @@ export default function (data) {
       })
 
       if (!created && __ITER === 0) {
-        console.log('Create user falhou', res.status, res.body?.slice(0, 300))
+        console.log('Create user falhou', res.status, res.body ? res.body.slice(0, 300) : 'no body')
       }
 
       if (!created) return
@@ -107,7 +107,7 @@ export default function (data) {
         userFlowTrend.add(updRes.timings.duration)
 
         if (!ok && __ITER === 0) {
-          console.log('Update falhou', updRes.status, updRes.body?.slice(0, 200))
+          console.log('Update falhou', updRes.status, updRes.body ? updRes.body.slice(0, 200) : 'no body')
         }
       })
     })
